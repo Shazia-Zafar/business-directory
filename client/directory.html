@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Browse verified local businesses across food, tech, health, retail, and neighborhood services." />
+  <title>Directory — Nearby &amp; Known</title>
+
+  <!-- Preconnect and Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Custom Design System -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <nav class="site-navbar" aria-label="Main navigation">
+      <div class="container-narrow d-flex justify-content-between align-items-center">
+        <a href="index.html" class="brand-mark">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Nearby &amp; Known</span>
+        </a>
+
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          ☰
+        </button>
+
+        <div class="nav-links-wrapper" id="navLinksWrapper">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="directory.html" class="nav-link active">Directory</a>
+          <a href="submit.html" class="nav-link">Add Your Business</a>
+          <button id="themeToggle" class="theme-toggle-btn" type="button" aria-label="Toggle theme"></button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Header & Search Controls -->
+    <section class="directory-header-section">
+      <div class="container-narrow">
+        <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-2">
+          <div>
+            <div class="eyebrow-chip">
+              <span>✦</span> Verified Directory
+            </div>
+            <h1>Browse the local directory</h1>
+            <p class="text-secondary mb-0" style="max-width: 540px;">
+              Search by business name, city, or tagline. Filter by category or click any card for full details and direct owner contact.
+            </p>
+          </div>
+          <div>
+            <a href="submit.html" class="btn btn-brand btn-sm">
+              <span>+ Add Your Listing</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Filter Card -->
+        <div class="filter-control-card">
+          <div class="row g-3 align-items-center">
+            <div class="col-lg-7 col-md-6">
+              <div class="search-input-wrap">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input
+                  type="text"
+                  id="searchInput"
+                  class="form-control-custom"
+                  placeholder="Search by name, city, or tagline…"
+                  aria-label="Search businesses"
+                />
+                <button type="button" id="searchClearBtn" class="search-clear-btn" aria-label="Clear search input">✕</button>
+              </div>
+            </div>
+
+            <div class="col-lg-5 col-md-6">
+              <div class="d-flex gap-2">
+                <select id="categorySelect" class="form-select-custom" aria-label="Filter by category">
+                  <option value="">All Categories (All Sectors)</option>
+                  <option value="Food">Food</option>
+                  <option value="Fashion">Fashion</option>
+                  <option value="Tech">Tech</option>
+                  <option value="Health">Health</option>
+                  <option value="Education">Education</option>
+                  <option value="Services">Services</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Category Tags -->
+          <div class="d-flex flex-wrap gap-2 mt-3 pt-3 border-top" id="quickCategoryChips" style="border-color: var(--border-subtle) !important;">
+            <button class="cat-chip active" data-category="">All</button>
+            <button class="cat-chip" data-category="Food"><span class="cat-dot" style="background: var(--cat-food)"></span>Food</button>
+            <button class="cat-chip" data-category="Fashion"><span class="cat-dot" style="background: var(--cat-fashion)"></span>Fashion</button>
+            <button class="cat-chip" data-category="Tech"><span class="cat-dot" style="background: var(--cat-tech)"></span>Tech</button>
+            <button class="cat-chip" data-category="Health"><span class="cat-dot" style="background: var(--cat-health)"></span>Health</button>
+            <button class="cat-chip" data-category="Education"><span class="cat-dot" style="background: var(--cat-education)"></span>Education</button>
+            <button class="cat-chip" data-category="Services"><span class="cat-dot" style="background: var(--cat-services)"></span>Services</button>
+            <button class="cat-chip" data-category="Retail"><span class="cat-dot" style="background: var(--cat-retail)"></span>Retail</button>
+            <button class="cat-chip" data-category="Other"><span class="cat-dot" style="background: var(--cat-other)"></span>Other</button>
+          </div>
+        </div>
+
+        <!-- Cold start notice on directory -->
+        <div id="directoryNotice" class="cold-start-banner mt-3 d-none" role="status">
+          <span>⏳</span>
+          <span id="directoryNoticeText">Connecting to directory service (waking up server instance)...</span>
+        </div>
+
+        <!-- Meta Results Bar -->
+        <div class="results-meta-bar" id="resultsMetaBar">
+          <span id="resultsCount">Loading directory listings…</span>
+          <a href="javascript:void(0)" id="resetFiltersLink" class="text-decoration-underline d-none" style="color: var(--accent-gold);">Reset filters</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Business Card Grid Section -->
+    <section class="business-grid-section">
+      <div class="container-narrow">
+        <div class="row g-4" id="businessGrid">
+          <!-- Populated by directory.js -->
+          <div class="col-12">
+            <div class="state-feedback-panel">
+              <div class="spinner-border text-warning mb-3" role="status" style="width: 2.5rem; height: 2.5rem;">
+                <span class="visually-hidden">Loading…</span>
+              </div>
+              <p class="mb-0">Fetching neighborhood businesses from the database…</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Business Details Modal -->
+  <div class="modal fade" id="businessModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom">
+          <div>
+            <span class="category-badge-pill mb-2 d-inline-block" id="modalCategoryBadge">Category</span>
+            <h3 class="modal-title h4 mb-0" id="modalTitle">Business Name</h3>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body modal-body-custom">
+          <div class="modal-detail-row">
+            <div class="modal-detail-label">City</div>
+            <div class="modal-detail-value" id="modalCity">City</div>
+          </div>
+          <div class="modal-detail-row">
+            <div class="modal-detail-label">Owner</div>
+            <div class="modal-detail-value" id="modalOwner">Owner Name</div>
+          </div>
+          <div class="modal-detail-row">
+            <div class="modal-detail-label">Tagline</div>
+            <div class="modal-detail-value fst-italic" id="modalTagline">Tagline description</div>
+          </div>
+          <div class="modal-detail-row" id="modalWebsiteRow">
+            <div class="modal-detail-label">Website</div>
+            <div class="modal-detail-value">
+              <a id="modalWebsite" href="#" target="_blank" rel="noopener noreferrer" class="text-decoration-underline" style="color: var(--accent-gold);">
+                Visit Website &nearr;
+              </a>
+            </div>
+          </div>
+          <div class="modal-detail-row">
+            <div class="modal-detail-label">Email</div>
+            <div class="modal-detail-value">
+              <a id="modalEmail" href="#" class="text-decoration-underline" style="color: var(--accent-gold);">
+                Contact Email
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer modal-footer-custom">
+          <button type="button" class="btn btn-outline-brand btn-sm" data-bs-dismiss="modal">Close</button>
+          <a id="modalContactBtn" href="#" class="btn btn-brand btn-sm">
+            <span>✉️ Send Email</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container-narrow d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div class="d-flex align-items-center gap-2">
+        <span class="fw-bold text-light">&copy; 2026 Nearby &amp; Known</span>
+        <span class="text-muted">&middot; Independent Neighborhood Directory</span>
+      </div>
+      <div class="d-flex align-items-center gap-3">
+        <a href="index.html">Home</a>
+        <span class="text-muted">&middot;</span>
+        <a href="submit.html">Add a Business</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/directory.js"></script>
+</body>
+</html>
