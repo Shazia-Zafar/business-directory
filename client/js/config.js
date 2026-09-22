@@ -1,14 +1,11 @@
 /**
  * Local Business Directory - Configuration
  * 
- * In local development, the API runs at http://localhost:5000/api.
- * When deployed to Render, replace API_BASE_URL with your Render service URL:
- * e.g., "https://business-directory-api.onrender.com/api"
+ * Deployed backend: Railway
  */
 
-// If window.RENDER_API_URL is set, use it; otherwise default to local server
-const API_BASE_URL = window.RENDER_API_URL || "http://localhost:5000/api";
-const API_BASE_URL = "https://business-directory-production-701a.up.railway.app";
+const API_BASE_URL = "https://business-directory-production-701a.up.railway.app/api";
+
 // Category palette definitions matching the design system
 const CATEGORY_COLORS = {
   Food: "#e06d44",
