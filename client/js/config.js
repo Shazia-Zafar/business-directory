@@ -8,7 +8,7 @@
 
 // If window.RENDER_API_URL is set, use it; otherwise default to local server
 const API_BASE_URL = window.RENDER_API_URL || "http://localhost:5000/api";
-
+const API_BASE_URL = "https://business-directory-production-701a.up.railway.app";
 // Category palette definitions matching the design system
 const CATEGORY_COLORS = {
   Food: "#e06d44",
